@@ -8,9 +8,10 @@ import ru.test.project.account.balance.service.server.service.StatisticMapServic
 import ru.test.project.account.balance.service.server.service.TimeRoundService;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Implementation of {@link StatisticMapService}
@@ -18,20 +19,23 @@ import java.util.concurrent.ConcurrentMap;
 @Service
 public class StatisticMapServiceImpl implements StatisticMapService {
 
+    @Autowired
+    private TimeRoundService timeRoundService;
+
     /**
      * Variable for synchronized
      */
-    private final Boolean LOCK = true;
-    @Autowired
-    private TimeRoundService timeRoundService;
+    private final Lock lock = new ReentrantLock();
+
     /**
      * Map for count getAmount by seconds
      */
-    private ConcurrentMap<Long, Long> getAmountMap = new ConcurrentHashMap<>();
+    private Map<Long, Long> getAmountMap = new HashMap<>();
+
     /**
      * Map for count addAmount by seconds
      */
-    private ConcurrentMap<Long, Long> addAmountMap = new ConcurrentHashMap<>();
+    private Map<Long, Long> addAmountMap = new HashMap<>();
 
     @Override
     @Cacheable(cacheNames = "getAmountMap")
@@ -60,8 +64,8 @@ public class StatisticMapServiceImpl implements StatisticMapService {
     @Override
     @CacheEvict(cacheNames = {"addAmountMap", "getAmountMap"})
     public void clearMaps() {
-        getAmountMap = new ConcurrentHashMap<>();
-        addAmountMap = new ConcurrentHashMap<>();
+        getAmountMap = new HashMap<>();
+        addAmountMap = new HashMap<>();
     }
 
     /**
@@ -69,11 +73,11 @@ public class StatisticMapServiceImpl implements StatisticMapService {
      *
      * @param currentMap - map
      */
-    private void incrementCount(ConcurrentMap<Long, Long> currentMap) {
+    private void incrementCount(Map<Long, Long> currentMap) {
         Instant now = Instant.now();
         Long roundMillsToSecond = timeRoundService.roundToSecond(now);
-        synchronized (LOCK) {
-            currentMap.put(roundMillsToSecond, currentMap.getOrDefault(roundMillsToSecond, 0l) + 1);
-        }
+        lock.lock();
+        currentMap.put(roundMillsToSecond, currentMap.getOrDefault(roundMillsToSecond, 0L) + 1);
+        lock.unlock();
     }
 }
