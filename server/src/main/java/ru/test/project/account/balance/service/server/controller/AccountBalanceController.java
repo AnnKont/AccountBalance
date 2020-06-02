@@ -1,11 +1,15 @@
 package ru.test.project.account.balance.service.server.controller;
 
-import io.swagger.annotations.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
 import ru.test.project.account.balance.service.server.constant.ControllerConstants;
 import ru.test.project.account.balance.service.server.dto.AmountDto;
 import ru.test.project.account.balance.service.server.error.AmountFitLongException;
@@ -16,6 +20,14 @@ import ru.test.project.account.balance.service.server.service.AccountBalanceServ
 import ru.test.project.account.balance.service.server.service.StatisticService;
 import ru.test.project.account.balance.service.server.service.ValidationService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * REST API controller for account balance
  */
@@ -23,16 +35,12 @@ import ru.test.project.account.balance.service.server.service.ValidationService;
 @RestController
 @RequestMapping(value = ControllerConstants.BALANCE, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@RequiredArgsConstructor
 public class AccountBalanceController {
 
-    @Autowired
-    private AccountBalanceService accountBalanceService;
-
-    @Autowired
-    private ValidationService validationService;
-
-    @Autowired
-    private StatisticService statisticService;
+    private final AccountBalanceService accountBalanceService;
+    private final ValidationService validationService;
+    private final StatisticService statisticService;
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successful"),
@@ -44,6 +52,7 @@ public class AccountBalanceController {
     public Long getAmount(@ApiParam(value = "Account id") @PathVariable("id") Integer id)
             throws ItemNotFoundException, BadIdException {
         log.info("Get amount by id: {}", id);
+        //todo use AOP
         statisticService.incrementGetAmountCount();
         validationService.validId(id);
         return accountBalanceService.getAmount(id);
@@ -60,6 +69,7 @@ public class AccountBalanceController {
                           @ApiParam(value = "Request body") @RequestBody AmountDto amountDto)
             throws BadIdException, BadAmountException, AmountFitLongException {
         log.info("Add amount by id: {}", id);
+        //todo use AOP
         statisticService.incrementAddAmountCount();
         validationService.validId(id);
         validationService.validAmount(amountDto.getValue());

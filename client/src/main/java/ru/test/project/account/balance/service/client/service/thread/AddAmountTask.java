@@ -1,10 +1,11 @@
 package ru.test.project.account.balance.service.client.service.thread;
 
-import lombok.extern.slf4j.Slf4j;
-import ru.test.project.account.balance.service.client.service.AccountService;
-
 import java.util.List;
 import java.util.Random;
+
+import ru.test.project.account.balance.service.client.service.AccountService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Task for add amount request
@@ -12,7 +13,7 @@ import java.util.Random;
 @Slf4j
 public class AddAmountTask extends AbstractTask {
 
-    private Random random;
+    private final Random random;
 
     public AddAmountTask(AccountService accountService, List<Integer> ids) {
         super(accountService, ids);

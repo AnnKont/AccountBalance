@@ -1,9 +1,13 @@
 package ru.test.project.account.balance.service.server.constant;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * Constants for path to controller
  */
-public class ControllerConstants {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class ControllerConstants {
 
     /**
      * Path to controller of balance

@@ -1,23 +1,25 @@
 package ru.test.project.account.balance.service.server.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import ru.test.project.account.balance.service.server.service.StatisticMapService;
-import ru.test.project.account.balance.service.server.service.StatisticService;
-
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
+import ru.test.project.account.balance.service.server.service.StatisticMapService;
+import ru.test.project.account.balance.service.server.service.StatisticService;
+
+import lombok.RequiredArgsConstructor;
+
 /**
  * Implementation of {@link StatisticService}
  */
 @Service
+@RequiredArgsConstructor
 public class StatisticServiceImpl implements StatisticService {
 
-    @Autowired
-    private StatisticMapService statisticMapService;
+    private final StatisticMapService statisticMapService;
 
     @Override
     public Map<Instant, Long> getCountOfGetAmountBySecond() {

@@ -1,21 +1,22 @@
 package ru.test.project.account.balance.service.client.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import ru.test.project.account.balance.service.client.model.RequestProperty;
-import ru.test.project.account.balance.service.client.service.factory.TaskFactory;
-import ru.test.project.account.balance.service.client.service.thread.AddAmountTask;
-import ru.test.project.account.balance.service.client.service.thread.ClearStatisticTask;
-import ru.test.project.account.balance.service.client.service.thread.GetAmountTask;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import ru.test.project.account.balance.service.client.model.RequestProperty;
+import ru.test.project.account.balance.service.client.service.factory.TaskFactory;
+import ru.test.project.account.balance.service.client.service.thread.AddAmountTask;
+import ru.test.project.account.balance.service.client.service.thread.ClearStatisticTask;
+import ru.test.project.account.balance.service.client.service.thread.GetAmountTask;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Service for client tasks
@@ -24,17 +25,22 @@ import java.util.stream.Collectors;
 @Service
 public class ClientService {
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
 
-    @Autowired
-    private StatisticService statisticService;
+    private final StatisticService statisticService;
 
     /**
      * Path to file with data
      */
-    @Value("${file.path}")
-    private String filePath;
+    private final String filePath;
+
+    public ClientService(AccountService accountService, StatisticService statisticService,
+            @Value("${file.path}") String filePath) {
+        this.accountService = accountService;
+        this.statisticService = statisticService;
+        this.filePath = filePath;
+    }
+
 
     /**
      * Get data, create and do tasks
@@ -53,8 +59,8 @@ public class ClientService {
                 .map(taskFactory -> taskFactory.createTask().getThread())
                 .collect(Collectors.toList());
 
-        threads.stream().parallel().forEach(thread -> thread.start());
-        threads.forEach(thread -> joinThread(thread));
+        threads.stream().parallel().forEach(Thread::start);
+        threads.forEach(this::joinThread);
         if (requestProperty.isClearStatisticAfterRequest()) {
             Thread thread = new ClearStatisticTask(statisticService).getThread();
             thread.start();
@@ -89,7 +95,7 @@ public class ClientService {
         boolean clearStatisticAfterRequest = false;
         String last = lines.get(lines.size() - 1);
         if (last.contains(String.valueOf(true)) || last.contains(String.valueOf(false))) {
-            clearStatisticAfterRequest = Boolean.valueOf(lines.remove(lines.size() - 1));
+            clearStatisticAfterRequest = Boolean.parseBoolean(lines.remove(lines.size() - 1));
         }
 
         List<Integer> ids = lines.stream()
@@ -120,7 +126,6 @@ public class ClientService {
         } catch (IOException e) {
             log.error("Error when try read file: {}", e.getMessage());
         }
-        ;
         return lines;
     }
 }

@@ -1,35 +1,38 @@
 package ru.test.project.account.balance.service.server.dao.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.math.BigInteger;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
 import ru.test.project.account.balance.service.server.dao.AccountBalanceDao;
 import ru.test.project.account.balance.service.server.error.AmountFitLongException;
 import ru.test.project.account.balance.service.server.error.ItemNotFoundException;
 
-import java.math.BigInteger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class AccountBalanceDaoImpl implements AccountBalanceDao {
 
     /**
      * SQL request for select account balance by id
      */
-    private final String SQL_GET_BY_ID = "SELECT amount FROM account_balance where id = ?";
+    private static final String SQL_GET_BY_ID = "SELECT amount FROM account_balance WHERE id = ?";
     /**
      * SQL request for update account balance by id
      */
-    private final String SQL_UPDATE_BALANCE = "UPDATE account_balance SET amount = amount + ? WHERE id = ?";
+    private static final String SQL_UPDATE_BALANCE = "UPDATE account_balance SET amount = amount + ? WHERE id = ?";
     /**
      * SQL request for create account balance by id
      */
-    private final String SQL_INSERT_BALANCE = "INSERT INTO account_balance (id, amount) VALUES (?, ?)";
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private static final String SQL_INSERT_BALANCE = "INSERT INTO account_balance (id, amount) VALUES (?, ?)";
+
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public long getAmount(Integer id) throws ItemNotFoundException {

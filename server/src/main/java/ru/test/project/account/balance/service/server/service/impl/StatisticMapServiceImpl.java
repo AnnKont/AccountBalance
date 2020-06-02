@@ -1,26 +1,28 @@
 package ru.test.project.account.balance.service.server.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-import ru.test.project.account.balance.service.server.service.StatisticMapService;
-import ru.test.project.account.balance.service.server.service.TimeRoundService;
-
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+import ru.test.project.account.balance.service.server.service.StatisticMapService;
+import ru.test.project.account.balance.service.server.service.TimeRoundService;
+
+import lombok.RequiredArgsConstructor;
+
 /**
  * Implementation of {@link StatisticMapService}
  */
 @Service
+@RequiredArgsConstructor
 public class StatisticMapServiceImpl implements StatisticMapService {
 
-    @Autowired
-    private TimeRoundService timeRoundService;
+    private final TimeRoundService timeRoundService;
 
     /**
      * Variable for synchronized

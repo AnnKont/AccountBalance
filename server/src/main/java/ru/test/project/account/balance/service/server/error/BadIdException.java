@@ -7,6 +7,6 @@ import ru.test.project.account.balance.service.server.constant.ExceptionDescript
  */
 public class BadIdException extends BadRequestException {
     public BadIdException(Integer id) {
-        super(ExceptionDescription.EXCEPTION_BAD_ID + String.valueOf(id));
+        super(ExceptionDescription.EXCEPTION_BAD_ID + id);
     }
 }
