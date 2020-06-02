@@ -1,7 +1,8 @@
 package ru.test.project.account.balance.service.client.service.thread;
 
-import lombok.extern.slf4j.Slf4j;
 import ru.test.project.account.balance.service.client.service.StatisticService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Task for clear statistic
@@ -9,7 +10,7 @@ import ru.test.project.account.balance.service.client.service.StatisticService;
 @Slf4j
 public class ClearStatisticTask extends ThreadTask {
 
-    private StatisticService statisticService;
+    private final StatisticService statisticService;
 
     public ClearStatisticTask(StatisticService statisticService) {
         super();

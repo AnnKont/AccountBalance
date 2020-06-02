@@ -1,24 +1,26 @@
 package ru.test.project.account.balance.service.client.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
 import ru.test.project.account.balance.service.client.service.HttpService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Implementation of service {@link HttpService}
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class HttpServiceImpl<T, D> implements HttpService<T, D> {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     @Override
     public T get(String url, Class<T> tClass) {

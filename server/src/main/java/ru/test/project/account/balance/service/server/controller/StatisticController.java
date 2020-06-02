@@ -1,19 +1,21 @@
 package ru.test.project.account.balance.service.server.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import ru.test.project.account.balance.service.server.constant.ControllerConstants;
 import ru.test.project.account.balance.service.server.service.StatisticService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * REST API controller for statistic
@@ -22,10 +24,10 @@ import ru.test.project.account.balance.service.server.service.StatisticService;
 @RestController
 @RequestMapping(value = ControllerConstants.STATISTIC, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@RequiredArgsConstructor
 public class StatisticController {
 
-    @Autowired
-    private StatisticService statisticService;
+    private final StatisticService statisticService;
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successful")})

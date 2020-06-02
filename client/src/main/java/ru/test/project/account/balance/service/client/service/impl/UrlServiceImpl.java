@@ -3,6 +3,7 @@ package ru.test.project.account.balance.service.client.service.impl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
 import ru.test.project.account.balance.service.client.service.UrlService;
 
 /**
@@ -11,37 +12,40 @@ import ru.test.project.account.balance.service.client.service.UrlService;
 @Service
 public class UrlServiceImpl implements UrlService {
 
-    private final String SLASH = "/";
+    private static final String SLASH = "/";
 
     /**
      * Url for server
      */
-    @Value("${account.service.server.url}")
-    private String url;
+    private final String url;
 
     /**
      * Path for balance
      */
-    @Value("${account.service.server.path.balance}")
-    private String balancePath;
+    private final String balancePath;
 
     /**
      * Path for statistic
      */
-    @Value("${account.service.server.path.statistic}")
-    private String statisticPath;
+    private final String statisticPath;
+
+    public UrlServiceImpl(@Value("${account.service.server.url}") String url,
+            @Value("${account.service.server.path.balance}") String balancePath,
+            @Value("${account.service.server.path.statistic}") String statisticPath) {
+        this.url = url;
+        this.balancePath = balancePath;
+        this.statisticPath = statisticPath;
+    }
 
     @Override
     @Cacheable("balanceUrl")
     public String getBalanceUrl(Integer id) {
-        StringBuilder stringBuilder = new StringBuilder(url).append(balancePath).append(SLASH).append(id);
-        return stringBuilder.toString();
+        return url + balancePath + SLASH + id;
     }
 
     @Override
     @Cacheable("statisticClearUrl")
     public String getStatisticClearUrl() {
-        StringBuilder stringBuilder = new StringBuilder(url).append(statisticPath);
-        return stringBuilder.toString();
+        return url + statisticPath;
     }
 }

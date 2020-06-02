@@ -1,22 +1,24 @@
 package ru.test.project.account.balance.service.server.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
 import ru.test.project.account.balance.service.server.dao.AccountBalanceDao;
 import ru.test.project.account.balance.service.server.error.AmountFitLongException;
 import ru.test.project.account.balance.service.server.error.ItemNotFoundException;
 import ru.test.project.account.balance.service.server.service.AccountBalanceService;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * Implementation of {@link AccountBalanceService}
  */
 @Service
+@RequiredArgsConstructor
 public class AccountBalanceServiceImpl implements AccountBalanceService {
 
-    @Autowired
-    private AccountBalanceDao accountBalanceDao;
+    private final AccountBalanceDao accountBalanceDao;
 
     @Override
     @Cacheable(cacheNames = "balance", key = "#id")
