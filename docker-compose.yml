@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  postgresql:
+    image: postgres:10-alpine
+    container_name: account-balance-postgresql
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_user
+    ports:
+      - "5432:5432"

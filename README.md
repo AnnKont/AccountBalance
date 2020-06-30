@@ -70,10 +70,8 @@ test_project - база
 <br/>test_project_user - роль для базы test_project
 
 <br/>База и пользователь указаны так же в *`resources/application.properties`* модуля Server.
-<br/>Так же нужно выполнить скрипт *`resources/init.sql`* на выбранной базе под правами суперпользователя.
 
-<br/>Вы можете использовать свою базу, своего пользователя и свою схему, но для этого необходимо изменить настройки в *`resources/application.properties`* в модуле Server
-и начальный скрипт инициализации схемы в *`resources/init.sql`*.
+<br/>Или можно поднять базу данных в докере, для этого выполните *`docker-compose pull`*, а затем  *`docker-compose up -d`* 
 
 ### Сборка jar файлов
 В каждом модуле нужно выполнить `mvn clean install`
@@ -99,7 +97,7 @@ swagger.json в папке api(только после выполнения mvn 
 ### Клиент
 
 Для запуска клиента нужно выполнить слудующую команду
-<br/>`java -DconfigPath="D:\Projects\local\AccountBalance\client\src\main\resources\client.properties" -jar D:\Projects\local\AccountBalance\client\target\client-0.0.1-SNAPSHOT.jar`
+<br/>`java -jar -DconfigPath="D:\Projects\local\AccountBalance\client\src\main\resources\client.properties" D:\Projects\local\AccountBalance\client\target\client-0.0.1-SNAPSHOT.jar`
 <br/>После -jar нужно указать путь до запускаемого файла
 <br/>В *`-DconfigPath`* указывается абсолютный путь до настроек из вне(при их изменение достаточно перезапустить клиент и нет необходимости пересобирать jar файл)
 <br/>Для запуска на одной машине достаточно изменить `server.port` в заданном файле, либо же указать его в *`-Dserver.port`* при запуске jar  

@@ -34,8 +34,8 @@ public class StatisticController {
     @ApiOperation(value = "Clear count of all request for addAmount and getAmount")
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
-    public void clearCountOfGetAndAddAmount() {
+    public void clearStatistic() {
         log.info("Clear all counts");
-        statisticService.clearMaps();
+        statisticService.clear();
     }
 }
