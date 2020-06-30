@@ -1,12 +1,12 @@
 package ru.test.project.account.balance.service.server.util;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import ru.test.project.account.balance.service.server.dto.AmountDto;
-
-import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+
+import ru.test.project.account.balance.service.server.dto.AmountDto;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Service for generate test items
@@ -31,17 +31,6 @@ public class TestModelHelper {
      */
     public static Long getLong() {
         return atomicLong.incrementAndGet();
-    }
-
-    /**
-     * Get rounded time by given round
-     *
-     * @param instant - time for round
-     * @param round   - value for round
-     * @return rounded time by given round
-     */
-    public static Long getLongFromInstantRound(Instant instant, Long round) {
-        return (instant.toEpochMilli() / round) * round;
     }
 
     /**

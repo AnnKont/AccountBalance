@@ -1,13 +1,10 @@
 package ru.test.project.account.balance.service.server.service.impl;
 
-import java.time.Instant;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import ru.test.project.account.balance.service.server.service.StatisticMapService;
+import ru.test.project.account.balance.service.server.models.StatisticInfo;
+import ru.test.project.account.balance.service.server.service.StatisticInfoService;
 import ru.test.project.account.balance.service.server.service.StatisticService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,55 +16,30 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StatisticServiceImpl implements StatisticService {
 
-    private final StatisticMapService statisticMapService;
+    @Qualifier("addRequestStatisticMapServiceImpl")
+    private final StatisticInfoService addRequestStatisticInfoService;
+    @Qualifier("getRequestStatisticMapServiceImpl")
+    private final StatisticInfoService getRequestStatisticInfoService;
 
     @Override
-    public Map<Instant, Long> getCountOfGetAmountBySecond() {
-        return getStatisticMap(statisticMapService.getMapOfGetAmount());
+    public StatisticInfo getStatisticForGetRequest() {
+        return getRequestStatisticInfoService.get();
     }
 
     @Override
-    public Long getAllCountOfGetAmount() {
-        return statisticMapService.getMapOfGetAmount().values().stream().mapToLong(Long::longValue).sum();
+    public StatisticInfo getStatisticForAddRequest() {
+        return addRequestStatisticInfoService.get();
     }
 
     @Override
-    public Map<Instant, Long> getCountOfAddAmountBySecond() {
-        return getStatisticMap(statisticMapService.getMapOfAddAmount());
+    public void clear() {
+        getRequestStatisticInfoService.clear();
+        addRequestStatisticInfoService.clear();
     }
 
     @Override
-    public Long getAllCountOfAddAmount() {
-        return statisticMapService.getMapOfAddAmount().values().stream().mapToLong(Long::longValue).sum();
-    }
-
-    @Override
-    public void incrementGetAmountCount() {
-        statisticMapService.incrementGetAmountCount();
-    }
-
-    @Override
-    public void incrementAddAmountCount() {
-        statisticMapService.incrementAddAmountCount();
-    }
-
-    @Override
-    public void clearMaps() {
-        statisticMapService.clearMaps();
-    }
-
-    /**
-     * Get statistic map with Instant key and sorted by key
-     *
-     * @param map - statistic map with Long key
-     * @return statistic map with Instant key and sorted by key
-     */
-    private Map<Instant, Long> getStatisticMap(Map<Long, Long> map) {
-        return map.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap((longEntry) -> Instant.ofEpochMilli(longEntry.getKey()),
-                        Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+    public void clearIfNoRequests() {
+        getRequestStatisticInfoService.clearIfNoRequests();
+        addRequestStatisticInfoService.clearIfNoRequests();
     }
 }

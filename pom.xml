@@ -23,6 +23,7 @@
         <springfox-swagger-ui.version>2.8.0</springfox-swagger-ui.version>
         <swagger-core.version>2.0.2</swagger-core.version>
         <postgresql.verion>42.1.1</postgresql.verion>
+        <powermock.version>2.0.7</powermock.version>
         <project.build.sourceEncoding>utf8</project.build.sourceEncoding>
         <!-- Plugins -->
         <swagger-maven-plugin-version>3.1.7</swagger-maven-plugin-version>
@@ -37,26 +38,31 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-jdbc</artifactId>
-                <version>${spring-boot.version}</version>
+              <artifactId>spring-boot-starter-jdbc</artifactId>
+              <version>${spring-boot.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring-boot.version}</version>
-                <scope>test</scope>
-            </dependency>
+          <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>${spring-boot.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>test</scope>
+          </dependency>
 
-            <!-- lombok -->
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok}</version>
+          <!-- lombok -->
+          <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok}</version>
             </dependency>
 
             <!-- PostgreSQL -->
@@ -85,16 +91,30 @@
                 <version>${springfox-swagger-ui.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-core</artifactId>
-                <version>${swagger-core.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>javax.ws.rs</groupId>
-                        <artifactId>jsr311-api</artifactId>
-                    </exclusion>
-                </exclusions>
+              <groupId>io.swagger.core.v3</groupId>
+              <artifactId>swagger-core</artifactId>
+              <version>${swagger-core.version}</version>
+              <exclusions>
+                <exclusion>
+                  <groupId>javax.ws.rs</groupId>
+                  <artifactId>jsr311-api</artifactId>
+                </exclusion>
+              </exclusions>
             </dependency>
+
+          <!-- Powermock - mock in test static methods -->
+          <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+          </dependency>
+          <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+          </dependency>
         </dependencies>
     </dependencyManagement>
     <build>

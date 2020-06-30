@@ -3,6 +3,7 @@ package ru.test.project.account.balance.service.server.service.impl;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ru.test.project.account.balance.service.server.dao.AccountBalanceDao;
 import ru.test.project.account.balance.service.server.error.AmountFitLongException;
@@ -27,6 +28,7 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
     }
 
     @Override
+    @Transactional
     @CacheEvict(cacheNames = "balance", key = "#id")
     public void addAmount(Integer id, Long value) throws AmountFitLongException {
         accountBalanceDao.addAmount(id, value);

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import ru.test.project.account.balance.service.server.annotations.Statistic;
+import ru.test.project.account.balance.service.server.annotations.Statistic.ResponseType;
 import ru.test.project.account.balance.service.server.constant.ControllerConstants;
 import ru.test.project.account.balance.service.server.dto.AmountDto;
 import ru.test.project.account.balance.service.server.error.AmountFitLongException;
@@ -17,7 +19,6 @@ import ru.test.project.account.balance.service.server.error.BadAmountException;
 import ru.test.project.account.balance.service.server.error.BadIdException;
 import ru.test.project.account.balance.service.server.error.ItemNotFoundException;
 import ru.test.project.account.balance.service.server.service.AccountBalanceService;
-import ru.test.project.account.balance.service.server.service.StatisticService;
 import ru.test.project.account.balance.service.server.service.ValidationService;
 
 import io.swagger.annotations.Api;
@@ -40,7 +41,6 @@ public class AccountBalanceController {
 
     private final AccountBalanceService accountBalanceService;
     private final ValidationService validationService;
-    private final StatisticService statisticService;
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successful"),
@@ -49,11 +49,10 @@ public class AccountBalanceController {
     @ApiOperation(value = "Return amount of account balance", notes = "Get account id from url")
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Statistic(type = ResponseType.GET)
     public Long getAmount(@ApiParam(value = "Account id") @PathVariable("id") Integer id)
             throws ItemNotFoundException, BadIdException {
         log.info("Get amount by id: {}", id);
-        //todo use AOP
-        statisticService.incrementGetAmountCount();
         validationService.validId(id);
         return accountBalanceService.getAmount(id);
     }
@@ -65,12 +64,11 @@ public class AccountBalanceController {
     @ApiOperation(value = "Add amount to account balance", notes = "Get account id from url, get amount from body")
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Statistic(type = ResponseType.ADD)
     public void addAmount(@ApiParam(value = "Account id") @PathVariable("id") Integer id,
                           @ApiParam(value = "Request body") @RequestBody AmountDto amountDto)
             throws BadIdException, BadAmountException, AmountFitLongException {
         log.info("Add amount by id: {}", id);
-        //todo use AOP
-        statisticService.incrementAddAmountCount();
         validationService.validId(id);
         validationService.validAmount(amountDto.getValue());
         accountBalanceService.addAmount(id, amountDto.getValue());

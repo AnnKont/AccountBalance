@@ -2,9 +2,10 @@ package ru.test.project.account.balance.service.server;
 
 import org.junit.After;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import ru.test.project.account.balance.service.server.annotation.TestAnnotation;
 import ru.test.project.account.balance.service.server.service.SchedulerService;
 
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 @RunWith(SpringRunner.class)
 public abstract class BaseTest {
 
-    @MockBean
+    @Mock
     private SchedulerService schedulerService;
 
     @After
